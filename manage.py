@@ -20,12 +20,15 @@ try:
 
       os.system('cls')
       print(f'Данные успешно сохранены в Excel Таблицу {game_name}.xlsx')
-
       print('=========================================\n'
             'Итоговый тест                        \n'
             f'Кол-во элементов в массиве: {len(data)} \n'
             f'Время выполнение скрипта: {(time.time() - start_time)}\n'
             '=========================================')
       
+      input()
+      
 except Exception as error:
       print(f"Ошибочка: {str(error)}")
+
+input()

@@ -44,6 +44,3 @@ urlAPITwitch = 'https://api.twitch.tv/helix'
 # URL YANDEX SEARCH
 
 urlYandexSearch = 'https://yandex.ru/search'
-
-# Сессия
-session = requests.Session()

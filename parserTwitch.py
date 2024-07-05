@@ -3,10 +3,12 @@ from bs4 import BeautifulSoup as bs4
 import src.formAnswer as formAnswer
 import asyncio
 import time
+import sys
+import requests
 
 def get_game_id(game_name: str):
     ''' Получение ид игры по её названию '''
-    response = session.get(f'{urlAPITwitch}/games', headers=headersTwitchAPI, params={'name': game_name})
+    response = requests.get(f'{urlAPITwitch}/games', headers=headersTwitchAPI, params={'name': game_name})
     if response.status_code == 200:
         data = response.json()['data']
         if not data: raise ValueError("Couldn't find such a game")
@@ -20,7 +22,7 @@ def get_game_id(game_name: str):
 async def get_social_links(user_name: str):
     ''' Поиск всех социальных сетей в яндекс поиске  '''
     result = []
-    response = session.post(f'{urlYandexSearch}/?text={user_name}+стример', headers = headersYandex)
+    response = requests.post(f'{urlYandexSearch}/?text={user_name}+стример', headers = headersYandex)
     time.sleep(1)
     if response.status_code == 200:
         soup = bs4(response.content, 'html.parser')
@@ -47,7 +49,7 @@ async def get_social_links(user_name: str):
 
 async def get_streamers(game_id: str, cursor: str = '', result: list = []):
     ''' Получение всех активных стримеров по выданной игре '''
-    response = session.get(f'{urlAPITwitch}/streams', headers=headersTwitchAPI, params = {'game_id': game_id, 'after': cursor})
+    response = requests.get(f'{urlAPITwitch}/streams', headers=headersTwitchAPI, params = {'game_id': game_id, 'after': cursor})
 
     if response.status_code == 200:
         data = response.json()
@@ -58,7 +60,9 @@ async def get_streamers(game_id: str, cursor: str = '', result: list = []):
 
         else:
             for data in data['data']:
+                sys.setrecursionlimit(50)
                 socials_list = await asyncio.gather(get_social_links(data['user_name']))
+                sys.setrecursionlimit(1000)
                 for socials in socials_list:
                     if not any('www.twitch.tv' in item[0] for item in socials): # Если твич не был найден, добавляем его по логину
                         socials.append([f'https://www.twitch.tv/{data['user_login']}', 'Not found'])
