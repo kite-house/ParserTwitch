@@ -5,23 +5,27 @@ import asyncio
 import os
 from art import tprint
 
-tprint('WELCOME')
-start_time = time.time()
-game_name = input("Введите название игры: ")
+try:
+      tprint('WELCOME')
+      start_time = time.time()
+      game_name = input("Введите название игры: ")
 
-os.system('cls')
-print('Формируем ответ, ожидайте!')
-data = asyncio.run(get_streamers(get_game_id(game_name)))
+      os.system('cls')
+      print('Формируем ответ, ожидайте!')
+      data = asyncio.run(get_streamers(get_game_id(game_name)))
 
-os.system('cls')
-print('Ответ получен! Создаем ecxel таблицу, и записываем туда ответ')
-save_in_excel(game_name, data)
+      os.system('cls')
+      print('Ответ получен! Создаем excel таблицу, и записываем туда ответ')
+      save_in_excel(game_name, data)
 
-os.system('cls')
-print('Все получилось!')
+      os.system('cls')
+      print(f'Данные успешно сохранены в Excel Таблицу {game_name}.xlsx')
 
-print('=========================================\n'
-      'Итоговый тест                        \n'
-      f'Кол-во элементов в массиве: {len(data)} \n'
-      f'Время выполнение скрипта: {(time.time() - start_time)}\n'
-      '=========================================')
+      print('=========================================\n'
+            'Итоговый тест                        \n'
+            f'Кол-во элементов в массиве: {len(data)} \n'
+            f'Время выполнение скрипта: {(time.time() - start_time)}\n'
+            '=========================================')
+      
+except Exception as error:
+      print(f"Ошибочка: {str(error)}")

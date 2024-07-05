@@ -31,7 +31,7 @@ headersTwitchAPI = {
 
 # Заголовок для запросов Yandex Search
 headersYandex = {
-    'User-Agent': UserAgent().edge,
+    'User-Agent': UserAgent().random,
     "content-type": "application/x-www-form-urlencoded",
 
 }

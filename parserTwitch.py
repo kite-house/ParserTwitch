@@ -2,6 +2,7 @@ from src.config import *
 from bs4 import BeautifulSoup as bs4
 import src.formAnswer as formAnswer
 import asyncio
+import time
 
 def get_game_id(game_name: str):
     ''' Получение ид игры по её названию '''
@@ -19,12 +20,12 @@ def get_game_id(game_name: str):
 async def get_social_links(user_name: str):
     ''' Поиск всех социальных сетей в яндекс поиске  '''
     result = []
-    response = session.post(f'{urlYandexSearch}/?text={user_name}+стример', headers = headersYandex, data=f"v=UFwvoDBMjc8LiYc1DKXiAomK&reason=q&c=''&k=''", cookies='')
+    response = session.post(f'{urlYandexSearch}/?text={user_name}+стример', headers = headersYandex)
+    time.sleep(1)
     if response.status_code == 200:
         soup = bs4(response.content, 'html.parser')
         answers = soup.find_all('div', class_ = 'Organic Organic_withThumb Organic_thumbFloat_right Organic_thumbPosition_full organic Typo Typo_text_m Typo_line_s')
         answers += soup.find_all(class_ = 'Organic organic Typo Typo_text_m Typo_line_s')
-        print(soup.find('title').text) # ДЛЯ ТЕСТОВ
         try:
             if not answers: return await get_social_links(user_name)  # Если не удалось получить информацию, пробуем ещё раз
         except RecursionError:
