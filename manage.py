@@ -7,11 +7,11 @@ from art import tprint
 
 try:
       tprint('WELCOME')
-      start_time = time.time()
       game_name = input("Введите название игры: ")
 
       os.system('cls')
       print('Формируем ответ, ожидайте!')
+      start_time = time.time()
       data = asyncio.run(get_streamers(get_game_id(game_name)))
 
       os.system('cls')
@@ -25,8 +25,6 @@ try:
             f'Кол-во элементов в массиве: {len(data)} \n'
             f'Время выполнение скрипта: {(time.time() - start_time)}\n'
             '=========================================')
-      
-      input()
       
 except Exception as error:
       print(f"Ошибочка: {str(error)}")
