@@ -29,7 +29,7 @@ async def get_social_links(user_name: str):
         for data in answers:
             link = data.find('a', class_ = 'Link Link_theme_normal OrganicTitle-Link organic__url link')
             info = data.find('span', class_ = 'OrganicTextContentSpan')
-            follows = 'Not Found'
+            follows = 'Not found'
             if link:
                 if info:
                     get_follows = info.find_all(class_ ='KeyValue-Row')
