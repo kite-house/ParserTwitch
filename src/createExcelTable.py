@@ -19,7 +19,15 @@ def save_in_excel(game_name: str, data: list):
 
     for social in data:
         ws.append(social)
+
+
     try:
         workbook.save(f'{game_name}.xlsx')
     except Exception:
-        workbook.save(f'{game_name}(1).xlsx')
+        for i in range(1, 11):
+            try:
+                workbook.save(f'{game_name}({i}).xlsx')
+            except Exception:
+                pass
+            else:
+                break

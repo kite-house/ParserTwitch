@@ -31,10 +31,12 @@ async def get_social_links(user_name: str):
             info = data.find('span', class_ = 'OrganicTextContentSpan')
             follows = 'Not Found'
             if link:
-                get_follows = info.find_all(class_ ='KeyValue-Row')
-                for keyValue in get_follows:
-                    if keyValue.find(class_ = 'KeyValue-ItemTitle').text == 'Подписчиков: ':
-                        follows = keyValue.find(class_ = 'KeyValue-ItemValue').text
+                if info:
+                    get_follows = info.find_all(class_ ='KeyValue-Row')
+                    for keyValue in get_follows:
+                        if keyValue.find(class_ = 'KeyValue-ItemTitle'):
+                            if keyValue.find(class_ = 'KeyValue-ItemTitle').text == 'Подписчиков: ':
+                                follows = keyValue.find(class_ = 'KeyValue-ItemValue').text
                         
                 result.append([link['href'], follows])
     return result
@@ -58,7 +60,7 @@ async def get_streamers(game_id: str, cursor: str = '', result: list = []):
                     if not any('www.twitch.tv' in item[0] for item in socials): # Если твич не был найден, добавляем его по логину
                         socials.append([f'https://www.twitch.tv/{data['user_login']}', 'Not found'])
                 result.append(formAnswer.to_form(socials))
-            return result
+                print(len(result), end = '\rПройдено элементов: ')
             return await get_streamers(game_id, cursor, result)
 
     else:
